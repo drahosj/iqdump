@@ -3,6 +3,8 @@
 import argparse
 import json
 
+from rx_block import rx_block
+
 def parse_args():
     # Hardcoded default settings for GNURadio
     settings = {
@@ -89,5 +91,17 @@ def print_settings(settings, replay):
     print("    Sample rate       : " + str(settings['sample_rate']))
     print("    Device string     : " + settings['device_string'])
 
-settings, replay = parse_args()
-print_settings(settings, replay)
+if __name__ == '__main__':
+    settings, replay = parse_args()
+    print_settings(settings, replay)
+
+    if replay:
+        tb = tx_block
+    else:
+        tb = rx_block
+
+    tb.start()
+    raw_input('Press Enter to quit: ')
+    tb.stop()
+    tb.wait()
+
