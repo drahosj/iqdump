@@ -5,7 +5,7 @@ import osmosdr
 
 class rx_block(gr.top_block):
     def __init__(self, settings):
-        gr.top_block.__init(self, "IQDump Receive Block")
+        gr.top_block.__init__(self, "IQDump Receive Block")
 
         # Save settings
         self.samp_rate = settings['sample_rate']
@@ -16,8 +16,8 @@ class rx_block(gr.top_block):
         # Blocks
         self.osmosdr_source_0 = osmosdr.source(args='numchan=1')
 
-        self.osmosdr_source_0.set_sample_rate(samp_rate)
-        self.osmosdr_source_0.set_center_freq(100e6, 0)
+        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        self.osmosdr_source_0.set_center_freq(self.center_freq, 0)
         self.osmosdr_source_0.set_freq_corr(0, 0)
         self.osmosdr_source_0.set_dc_offset_mode(0, 0)
         self.osmosdr_source_0.set_iq_balance_mode(0, 0)
@@ -28,11 +28,12 @@ class rx_block(gr.top_block):
         self.osmosdr_source_0.set_antenna("", 0)
         self.osmosdr_source_0.set_bandwidth(0, 0)
 
-        self.file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, "", True)
+        self.file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, 
+                self.iq_file, True)
         self.file_sink_0.set_unbuffered(False)
 
-        self.connect((self.blocks_osmosdr_source_0, 0),
-                (self.blocks_file_sink_0, 0))
+        self.connect((self.osmosdr_source_0, 0),
+                (self.file_sink_0, 0))
 
     def get_samp_rate(self):
         return self.samp_rate

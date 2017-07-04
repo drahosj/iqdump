@@ -96,9 +96,9 @@ if __name__ == '__main__':
     print_settings(settings, replay)
 
     if replay:
-        tb = tx_block
+        tb = tx_block(settings)
     else:
-        tb = rx_block
+        tb = rx_block(settings)
 
     tb.start()
     raw_input('Press Enter to quit: ')
