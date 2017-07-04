@@ -4,6 +4,7 @@ import argparse
 import json
 
 from rx_block import rx_block
+from tx_block import tx_block
 
 def parse_args():
     # Hardcoded default settings for GNURadio

@@ -14,8 +14,8 @@ class rx_block(gr.top_block):
         self.iq_file = settings['iq_file']
 
         # Blocks
-        self.osmosdr_source_0 = osmosdr.source(args='numchan=1')
-
+        self.osmosdr_source_0 = osmosdr.source(args='numchan=1 ' +
+                self.device_string)
         self.osmosdr_source_0.set_sample_rate(self.samp_rate)
         self.osmosdr_source_0.set_center_freq(self.center_freq, 0)
         self.osmosdr_source_0.set_freq_corr(0, 0)
@@ -32,6 +32,7 @@ class rx_block(gr.top_block):
                 self.iq_file, True)
         self.file_sink_0.set_unbuffered(False)
 
+        # Connections
         self.connect((self.osmosdr_source_0, 0),
                 (self.file_sink_0, 0))
 
